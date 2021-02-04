@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from datetime import datetime
 # Create your models here.
 
 class TwitterUser(models.Model):
@@ -30,6 +31,8 @@ class TwitterUser(models.Model):
     profile_banner_url = models.SlugField(verbose_name="profile_banner_url")
     profile_image_url_https = models.SlugField(verbose_name="profile_image_url_https")
 
+    def __str__(self):
+        return self.screen_name
 
 class TwitterStatus(models.Model):
     '''
@@ -50,15 +53,18 @@ class TwitterStatus(models.Model):
     truncated = models.BooleanField(verbose_name="truncated")
     in_reply_to_status_id = models.BigIntegerField(verbose_name="in_reply_to_status_id", blank=True, null=True)
     in_reply_to_user_id = models.BigIntegerField(verbose_name="in_reply_to_user_id", blank=True, null=True)
-    in_reply_to_screen_name = models.CharField(max_length=200, verbose_name="in_reply_to_screen_name")
+    in_reply_to_screen_name = models.CharField(max_length=200, verbose_name="in_reply_to_screen_name", blank=True)
     user = models.ForeignKey(TwitterUser, on_delete=models.CASCADE, verbose_name="user")
     id_quoted_status = models.BigIntegerField(verbose_name="quoted_status_id", blank=True, null=True)
     is_quote_status = models.BooleanField(verbose_name="is_quote_status")
-    quoted_status = models.ForeignKey("TwitterStatus", on_delete=models.CASCADE, verbose_name="quoted_status", related_name="quoted")
-    retweeted_status = models.ForeignKey("TwitterStatus", on_delete=models.CASCADE, verbose_name="retweeted_status", related_name="retweeted")
+    quoted_status = models.ForeignKey("TwitterStatus", on_delete=models.CASCADE, verbose_name="quoted_status", related_name="quoted", blank=True, null=True)
+    retweeted_status = models.ForeignKey("TwitterStatus", on_delete=models.CASCADE, verbose_name="retweeted_status", related_name="retweeted", blank=True, null=True)
     quote_count = models.IntegerField(verbose_name="quote_count", blank=True, null=True)
     reply_count = models.IntegerField(verbose_name="reply_count", blank=True, null=True)
     retweet_count = models.IntegerField(verbose_name="retweet_count", blank=True, null=True)
     favorite_count = models.IntegerField(verbose_name="favorite_count", blank=True, null=True)
     lang = models.CharField(max_length=30, verbose_name="language", blank=True)
     entities = JSONField(verbose_name="entities")
+
+    def __str__(self):
+        return self.id_str
