@@ -9,6 +9,7 @@ psycopg2-binary = "*"
 tweepy = "*"
 celery = "*"
 django-allauth = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 

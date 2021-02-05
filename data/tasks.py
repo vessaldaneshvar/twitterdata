@@ -35,16 +35,16 @@ def get_tweets_of_popular_person():
     """
     
     popular_person = TwitterUser.objects.filter(
-        "statuses_count__gte" = 2000,
-        "followers_count__gte" = 20000,
-        "friends_count__gt" = F("followers_count") / 10 ,
+        statuses_count__gte = 2000,
+        followers_count__gte = 20000,
+        friends_count__gt = F("followers_count") / 10 ,
     )
     query_twitter = ""
     for person in popular_person.all():
         if len(query_twitter) > 450:
             break
             # TODO : send request for other person
-        query_twitter += f"from:{perosn.screen_name} OR "
+        query_twitter += f"from:{person.screen_name} OR "
 
     # Other condition
     query_twitter = query_twitter[:-3]

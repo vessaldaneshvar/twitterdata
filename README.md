@@ -34,6 +34,8 @@
 1. Postgresql
 1. Celery
 1. Redis
+1. Sentry
+1. Travis CI
 1. Tweepy
 
 
